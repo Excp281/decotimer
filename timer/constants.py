@@ -1,0 +1,2 @@
+WORKING = 0
+STOPPED = 1
