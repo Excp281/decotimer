@@ -1,10 +1,10 @@
 from timer.keys import keys
-from timer.constants import WORKING, STOPPED
+from timer.constants import ENABLED, DISABLED
 from time import time
 
 
-class Every:
-    def __init__(self, key, milliseconds,
+class Wait:
+    def __init__(self, key, autoenable, milliseconds,
                  seconds, minutes,
                  hours, days,
                  func, *args, **kwargs):
@@ -19,7 +19,10 @@ class Every:
         self.args = args
         self.kwargs = kwargs
 
-        self.status = STOPPED
+        if autoenable:
+            self.status = ENABLED
+        else:
+            self.status = DISABLED
 
         self.tick_time = self.milliseconds / 1000 + self.seconds \
             + self.minutes * 60 + self.hours * 3600 \
@@ -28,16 +31,21 @@ class Every:
 
         self.total = 0
 
-    def start(self):
-        self.status = WORKING
+    def get_total(self):
+        raise Exception("timer.wait have not total counter")
+
+    def enable(self):
+        self.status = ENABLED
 
     def stop(self):
-        self.status = STOPPED
+        self.status = DISABLED
 
     def run(self):
-        if self.status == WORKING:
-            tick_time = time() - self.last_tick
-            if tick_time >= self.tick_time:
-                self.last_tick = time() + self.tick_time - tick_time
+        delta = time() - self.last_tick
+        if self.status == ENABLED:
+            if time() - self.last_tick >= self.tick_time:
                 self.func(*self.args, **self.kwargs)
                 self.total += 1
+                keys.delete(self.key)
+        else:
+            self.last_tick = time() - delta

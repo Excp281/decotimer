@@ -1,32 +1,49 @@
-from timer.every import Every
+from timer.repeat import Repeat
+from timer.wait import Wait
 from timer.keys import keys
+from copy import copy
 
 
-def every(key, args=[],
-          kwargs={}, milliseconds=0,
-          seconds=0, minutes=0,
-          hours=0, days=0):
+def repeat(key, autoenable=True, milliseconds=0,
+           seconds=0, minutes=0,
+           hours=0, days=0,
+           args=[], kwargs={}, ):
     def decorator(func):
-        Every(key, milliseconds,
-              seconds, minutes,
-              hours, days,
-              func, *args,
-              **kwargs)
+        Repeat(key, autoenable, milliseconds,
+               seconds, minutes,
+               hours, days,
+               func, *args,
+               **kwargs)
         return func
 
     return decorator
 
 
-def start(key):
-    keys.get(key).start()
+def wait(key, autoenable=True, milliseconds=0,
+         seconds=0, minutes=0,
+         hours=0, days=0,
+         args=[], kwargs={}, ):
+    def decorator(func):
+        Wait(key, autoenable, milliseconds,
+             seconds, minutes,
+             hours, days,
+             func, *args,
+             **kwargs)
+        return func
+
+    return decorator
 
 
-def stop(key):
-    keys.get(key).stop()
+def enable(key):
+    keys.get(key).enable()
+
+
+def disable(key):
+    keys.get(key).disable()
 
 
 def total(key):
-    return keys.get(key).total
+    return keys.get(key).get_total()
 
 
 def get(key):
@@ -34,8 +51,9 @@ def get(key):
 
 
 def tick():
-    for key in keys.lst:
+    lst = copy(keys.lst)
+    for key in lst:
         keys.lst[key].run()
 
 
-__all__ = ["tick", "every", "start", "stop", "total", "get"]
+__all__ = ["tick", "repeat", "wait", "enable", "disable", "total", "get"]
