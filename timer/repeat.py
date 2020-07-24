@@ -23,10 +23,6 @@ class Repeat:
             self.status = ENABLED
         else:
             self.status = DISABLED
-
-        self.tick_time = self.milliseconds / 1000 + self.seconds \
-            + self.minutes * 60 + self.hours * 3600 \
-            + self.days * 24 * 3600
         self.last_tick = time()
 
         self.total = 0
@@ -41,9 +37,12 @@ class Repeat:
         self.status = DISABLED
 
     def run(self):
+        atick_time = self.milliseconds / 1000 + self.seconds \
+            + self.minutes * 60 + self.hours * 3600 \
+            + self.days * 24 * 3600
         if self.status == ENABLED:
             tick_time = time() - self.last_tick
-            if tick_time >= self.tick_time:
-                self.last_tick = time() + self.tick_time - tick_time
+            if tick_time >= atick_time:
+                self.last_tick = time() + atick_time - tick_time
                 self.func(*self.args, **self.kwargs)
                 self.total += 1

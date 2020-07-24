@@ -41,9 +41,12 @@ class Wait:
         self.status = DISABLED
 
     def run(self):
+        tick_time = self.milliseconds / 1000 + self.seconds \
+            + self.minutes * 60 + self.hours * 3600 \
+            + self.days * 24 * 3600
         delta = time() - self.last_tick
         if self.status == ENABLED:
-            if time() - self.last_tick >= self.tick_time:
+            if time() - self.last_tick >= tick_time:
                 self.func(*self.args, **self.kwargs)
                 self.total += 1
                 keys.delete(self.key)
