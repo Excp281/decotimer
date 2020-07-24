@@ -1,5 +1,5 @@
-from timer.keys import keys
-from timer.constants import ENABLED, DISABLED
+from decotimer.keys import keys
+from decotimer.constants import ENABLED, DISABLED
 from time import time
 
 

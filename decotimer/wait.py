@@ -1,5 +1,5 @@
-from timer.keys import keys
-from timer.constants import ENABLED, DISABLED
+from decotimer.keys import keys
+from decotimer.constants import ENABLED, DISABLED
 from time import time
 
 
@@ -32,7 +32,7 @@ class Wait:
         self.total = 0
 
     def get_total(self):
-        raise Exception("timer.wait have not total counter")
+        raise Exception("decotimer.wait have not total counter")
 
     def enable(self):
         self.status = ENABLED

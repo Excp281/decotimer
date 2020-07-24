@@ -1,6 +1,6 @@
-from timer.repeat import Repeat
-from timer.wait import Wait
-from timer.keys import keys
+from decotimer.repeat import Repeat
+from decotimer.wait import Wait
+from decotimer.keys import keys
 from copy import copy
 
 
